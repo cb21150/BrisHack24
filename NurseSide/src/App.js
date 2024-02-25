@@ -43,6 +43,94 @@ function App() {
     urineOutput: '',
   });
 
+  const calculateRiskScore = () => {
+    // Sample risk score calculation (you can replace this with your own logic)
+    let riskScore = 0;
+
+    // Example: Increase risk score if heart rate is above 100
+    if (formData.heartRate >= 130) {
+      riskScore += 3;
+    } else if (formData.heartRate >= 110 && formData.heartRate < 130){
+      riskScore += 2;
+    } else if (formData.heartRate >= 90 && formData.heartRate < 110){
+      riskScore += 1;
+    } else if (formData.heartRate >= 50 && formData.heartRate < 90){
+      riskScore += 0;
+    } else if (formData.heartRate >= 50 && formData.heartRate < 90){
+      riskScore += 0;
+    } else if (formData.heartRate >= 40 && formData.heartRate < 50){
+      riskScore += 1;
+    } else if (formData.heartRate < 40) {
+      riskScore += 3;
+    }
+
+
+    if (formData.systolicBloodPressure >= 220) {
+      riskScore += 3;
+    } else if (formData.systolicBloodPressure >= 111 && formData.systolicBloodPressure < 220){
+      riskScore += 0;
+    } else if (formData.systolicBloodPressure >= 101 && formData.systolicBloodPressure < 111){
+      riskScore += 1;
+    } else if (formData.systolicBloodPressure >= 91 && formData.systolicBloodPressure < 101){
+      riskScore += 2;
+    } else if (formData.systolicBloodPressure < 91) {
+      riskScore += 3;
+    }
+
+
+    // Example: Increase risk score if oxygen saturation is below 95
+    if (formData.oxygenSaturation >= 96) {
+      riskScore += 0;
+    } else if (formData.oxygenSaturation >= 94 && formData.oxygenSaturation < 96){
+      riskScore += 1;
+    } else if (formData.oxygenSaturation >= 92 && formData.oxygenSaturation < 93){
+      riskScore += 2;
+    } else if (formData.oxygenSaturation <= 91) {
+      riskSore += 3;
+    }
+
+    if (formData.hasSupplementaryO2Device) {
+      riskScore += 2;
+    } 
+  
+    if (formData.temperature >= 39.1) {
+      riskScore += 2;
+    } else if (formData.temperature >= 38.1 && formData.temperature < 39.1){
+      riskScore += 1;
+    } else if (formData.temperature >= 36.1 && formData.temperature < 38.1){
+      riskScore += 0;
+    } else if (formData.temperature >= 35.1 && formData.temperature < 36.1) {
+      riskSore += 1;
+    } else if (formData.temperature < 35.1) {
+      riskSore += 3;
+    }
+
+    if (formData.responsiveness != 'Alert') {
+      riskScore += 3;
+    }
+
+    if (formData.gcs != 15) {
+      riskScore += 1;
+    }
+
+    if (!formData.equalPupils || !formData.responsiveToLight){
+      riskScore += 1;
+    }
+
+    if (formData.dehydration) {
+      riskScore += 1;
+    }
+
+    if (formData.heartBeatRhythm != 'Regular') {
+      riskScore += 1;
+    }
+    
+
+    return riskScore;
+  };
+
+
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: type === 'checkbox' ? checked : value }));
@@ -50,8 +138,15 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission, you can send the data to your backend or perform any required actions
+
+    // Calculate risk score
+    const riskScore = calculateRiskScore();
+
+    // Log risk score and form data
+    console.log('Risk Score:', riskScore);
     console.log('Form Data:', formData);
+
+    // You can use the risk score and form data as needed (send to backend, display to user, etc.)
   };
 
   return (
