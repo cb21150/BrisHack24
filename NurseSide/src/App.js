@@ -17,9 +17,11 @@ const Input = ({ label, name, type, value, onChange, required, unit, options }) 
             ))}
           </select>
         ) : (
-          <input type={type} name={name} value={value} onChange={onChange} required={required} />
+          <>
+            <input type={type} name={name} value={value} onChange={onChange} required={required} />
+            {type === 'number' && unit}
+          </>
         )}
-        {unit}
       </label>
     </div>
   );
@@ -162,9 +164,21 @@ function App() {
     // Calculate risk score
     const riskScore = calculateRiskScore();
 
+    let monitoringInstructions = '';
+    if (riskScore === 0) {
+      monitoringInstructions = 'Monitor every 12 hours by nurse.';
+    } else if (riskScore >= 1 && riskScore <= 4) {
+      monitoringInstructions = 'Monitor every 6 hours by nurse. Needs nurse evaluation.';
+    } else if (riskScore >= 5 && riskScore <= 6) {
+      monitoringInstructions = 'Doctor needs to review. Every 1-2 hours consult critical care response team.';
+    } else if (riskScore >= 7) {
+      monitoringInstructions = 'Immediate on-site assessment by critical care response team.';
+    }
+
     // Log risk score and form data
     console.log('Risk Score:', riskScore);
     console.log('Form Data:', formData);
+    console.log('Monitoring Instructions:', monitoringInstructions);
 
     // You can use the risk score and form data as needed (send to backend, display to user, etc.)
   };
@@ -210,7 +224,6 @@ function App() {
           type="number"
           value={formData.oxygenSaturation}
           onChange={handleChange}
-          required
           unit="%"
         />
 
@@ -220,7 +233,6 @@ function App() {
           type="checkbox"
           checked={formData.hasSupplementaryO2Device}
           onChange={handleChange}
-          required
         />
 
         <Input
@@ -259,7 +271,6 @@ function App() {
           type="checkbox"
           checked={formData.equalPupils}
           onChange={handleChange}
-          required
         />
 
         <Input
@@ -268,7 +279,6 @@ function App() {
           type="checkbox"
           checked={formData.responsiveToLight}
           onChange={handleChange}
-          required
         />
 
         <Input
@@ -287,7 +297,6 @@ function App() {
           type="checkbox"
           value={formData.dehydration}
           onChange={handleChange}
-          required
         />
 
         <button type="submit">Submit</button>
