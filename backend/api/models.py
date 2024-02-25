@@ -7,6 +7,7 @@ class Patient(db.Model):
     is_form_for_self = db.Column(db.Boolean)
     conditions = db.Column(db.Text)
     generated_response = db.Column(db.Text)
+    priority_level = db.Column(db.Integer)
 
 
     def to_json(self):
@@ -16,5 +17,6 @@ class Patient(db.Model):
             'nhsNumber': self.nhs_number,
             'isFormForSelf': self.is_form_for_self,
             'conditions': self.conditions,
-            'generatedResponse': self.generated_response
+            'generatedResponse': self.generated_response,
+            'priorityLevel': self.priority_level
         }

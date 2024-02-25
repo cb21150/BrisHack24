@@ -46,9 +46,14 @@ function App() {
   const calculateRiskScore = () => {
     // Sample risk score calculation (you can replace this with your own logic)
     let riskScore = 0;
+    let noRisk = false;
+    let lowRisk = false;
+    let midRisk = false;
+    let highRisk = false;
 
     // Example: Increase risk score if heart rate is above 100
     if (formData.heartRate >= 130) {
+      midRisk = true;
       riskScore += 3;
     } else if (formData.heartRate >= 110 && formData.heartRate < 130){
       riskScore += 2;
@@ -61,11 +66,13 @@ function App() {
     } else if (formData.heartRate >= 40 && formData.heartRate < 50){
       riskScore += 1;
     } else if (formData.heartRate < 40) {
+      midRisk = true;
       riskScore += 3;
     }
 
 
     if (formData.systolicBloodPressure >= 220) {
+      midRisk = true;
       riskScore += 3;
     } else if (formData.systolicBloodPressure >= 111 && formData.systolicBloodPressure < 220){
       riskScore += 0;
@@ -75,6 +82,7 @@ function App() {
       riskScore += 2;
     } else if (formData.systolicBloodPressure < 91) {
       riskScore += 3;
+      midRisk = true;
     }
 
 
@@ -86,6 +94,7 @@ function App() {
     } else if (formData.oxygenSaturation >= 92 && formData.oxygenSaturation < 93){
       riskScore += 2;
     } else if (formData.oxygenSaturation <= 91) {
+      midRisk = true;
       riskScore += 3;
     }
 
@@ -102,10 +111,12 @@ function App() {
     } else if (formData.temperature >= 35.1 && formData.temperature < 36.1) {
       riskScore += 1;
     } else if (formData.temperature < 35.1) {
+      midRisk = true;
       riskScore += 3;
     }
 
     if (formData.responsiveness != 'Alert') {
+      midRisk = true;
       riskScore += 3;
     }
 
@@ -124,7 +135,16 @@ function App() {
     if (formData.heartBeatRhythm != 'Regular') {
       riskScore += 1;
     }
-    
+
+    if (riskScore >= 7) {
+      highRisk = true;
+    } else if (riskScore >= 5 && riskScore < 7 || midRisk){
+      midRisk = true;
+    } else if (riskScore >= 1 && riskScore < 5) {
+      lowRisk = true;
+    } else {
+      noRisk = true;
+    }
 
     return riskScore;
   };

@@ -2,7 +2,11 @@ import logo from "./logo.svg";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import LoginScreen from "./LoginScreen";
 import PatientInfo from "./PatientInfo";
+<<<<<<< HEAD
 import Component from "./outputtest";
+=======
+import NursePage from "./NursePage";
+>>>>>>> 4e188e4ed575f6902e7bbe975048de13892cac9f
 import React, { useState } from "react";
 import "./App.css";
 
@@ -25,7 +29,11 @@ function App() {
       <Routes>
         <Route path="/" element={<PatientInfo />} />
         <Route path="/login" element={<LoginScreen />} />
+<<<<<<< HEAD
         <Route path="/output" element={<Component/>}/>
+=======
+        <Route path="/nurse" element={<NursePage />} />
+>>>>>>> 4e188e4ed575f6902e7bbe975048de13892cac9f
       </Routes>
     </BrowserRouter>
   );
