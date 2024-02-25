@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 
-const Input = ({ label, name, type, value, onChange, required, unit }) => {
+const Input = ({ label, name, type, value, onChange, required, unit, options }) => {
   if (type === 'checkbox') {
     return (
       <div className="input-container">
@@ -15,6 +15,26 @@ const Input = ({ label, name, type, value, onChange, required, unit }) => {
             required={required}
           />
           {unit}
+        </label>
+      </div>
+    );
+  } else if (type === 'select') {
+    return (
+      <div className="input-container">
+        <label>
+          {label}:
+          <select
+            name={name}
+            value={value}
+            onChange={onChange}
+            required={required}
+          >
+            {options.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
     );
@@ -140,11 +160,72 @@ function App() {
           unit="/15"
         />
 
-      
+        <Input
+          label="Responsiveness (AVPU)"
+          name="responsiveness"
+          type="select"
+          value={formData.responsiveness}
+          onChange={handleChange}
+          required
+          options={['', 'Alert', 'Voice', 'Pain', 'Unresponsive']}
+        />
 
+        <Input
+          label="Equal Pupils"
+          name="equalPupils"
+          type="checkbox"
+          value={formData.equalPupils}
+          onChange={handleChange}
+          required
+        />
 
-        {/* Add the rest of your form fields using the Input component */}
-        {/* ... */}
+        <Input
+          label="Pupil reaction to light"
+          name="responsiveToLight"
+          type="checkbox"
+          value={formData.responsiveToLight}
+          onChange={handleChange}
+          required
+        />
+
+        <Input
+          label="Heart Rhythm"
+          name="heartBeatRhythm"
+          type="select"
+          value={formData.heartBeatRhythm}
+          onChange={handleChange}
+          required
+          options={['', 'Regular', 'Regularly Irregular', 'Irregularly Irregular']}
+        />
+
+        <Input
+          label="Dehydration"
+          name="dehydration"
+          type="checkbox"
+          value={formData.dehydration}
+          onChange={handleChange}
+          required
+        />
+
+        <Input
+          label="Haemoglobin"
+          name="hemoglobin"
+          type="number"
+          value={formData.hemoglobin}
+          onChange={handleChange}
+          required
+          unit="g/dL"
+        />
+
+        <Input
+          label="Urint Output"
+          name="urineOutput"
+          type="number"
+          value={formData.urineOutput}
+          onChange={handleChange}
+          required
+          unit="mL/kg/hour"
+        />
 
         <button type="submit">Submit</button>
       </form>
@@ -153,4 +234,3 @@ function App() {
 }
 
 export default App;
-
