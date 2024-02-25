@@ -5,6 +5,8 @@ export default function PatientInfo() {
   const [nhsNumber, setNhsNumber] = useState("");
   const [isFormForSelf, setIsFormForSelf] = useState(true); // Default to true for "This form is for myself"
   const [conditions, setConditions] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleOptionChange = (event) => {
     console.log("event.target.id:", event.target.id);
@@ -35,10 +37,24 @@ export default function PatientInfo() {
 
       // get json data from response
       const data = await response.json();
-      console.log("Response from server:", data);
+      console.log(data)
+      if (response.ok) {
+        setSuccessMessage(data.message);
+        setErrorMessage("");
+      } else {
+        setErrorMessage(data.error);
+        setSuccessMessage("");
+        console.log(errorMessage)
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setErrorMessage("An error occurred while submitting the form.");
+      setSuccessMessage("");
     }
+    //   console.log("Response from server:", data);
+    // } catch (error) {
+    //   console.error("Error submitting form:", error);
+    // }
   };
 
   return (
@@ -158,6 +174,8 @@ export default function PatientInfo() {
                 Submit
               </button>
             </div>
+{successMessage && <div className="bg-green-100 text-green-800 p-4 rounded-md">{successMessage}</div>}
+      {errorMessage && <div className="bg-red-100 text-red-800 p-4 rounded-md">{errorMessage}</div>}
           </div>
         </div>
       </div>
