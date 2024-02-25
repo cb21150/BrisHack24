@@ -40,17 +40,57 @@ function App() {
       <h1>Medical Assessment Form</h1>
       <form onSubmit={handleSubmit}>
         {/* Add your form fields here */}
-        <label>
-          Systolic Blood Pressure:
+        <div>
+          <label>
+            Systolic Blood Pressure:
+            <input
+              type="number"
+              name="systolicBloodPressure"
+              value={formData.systolicBloodPressure}
+              onChange={handleChange}
+              required
+            />
+            mmHg
+          </label>
+        </div>
+
+        <div>
+          Heart Rate:
           <input
             type="number"
-            name="systolicBloodPressure"
-            value={formData.systolicBloodPressure}
+            name="heartRate"
+            value={formData.heartRate}
             onChange={handleChange}
             required
           />
-          mmHg
-        </label>
+          bpm
+        </div>
+
+        <div>
+          Respiratory Rate:
+          <input
+            type="number"
+            name="respiratoryRate"
+            value={formData.respiratoryRate}
+            onChange={handleChange}
+            required
+          />
+          breaths per min
+        </div>
+        
+        <div>
+          Oxygen Saturation:
+          <input
+            type="number"
+            name="oxygenSaturation"
+            value={formData.oxygenSaturation}
+            onChange={handleChange}
+            required
+          />
+          %
+        </div>
+        
+
         {/* Repeat similar structures for other fields */}
         {/* ... */}
         <button type="submit">Submit</button>
