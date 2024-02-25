@@ -1,15 +1,35 @@
-import React, { useState } from 'react';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
-const Input = ({ label, name, type, value, onChange, required, unit, options }) => {
+const Input = ({
+  label,
+  name,
+  type,
+  value,
+  onChange,
+  required,
+  unit,
+  options,
+}) => {
   return (
     <div className="input-container">
       <label>
         {label}:
-        {type === 'checkbox' ? (
-          <input type={type} name={name} checked={value} onChange={onChange} required={required} />
-        ) : type === 'select' ? (
-          <select name={name} value={value} onChange={onChange} required={required}>
+        {type === "checkbox" ? (
+          <input
+            type={type}
+            name={name}
+            checked={value}
+            onChange={onChange}
+            required={required}
+          />
+        ) : type === "select" ? (
+          <select
+            name={name}
+            value={value}
+            onChange={onChange}
+            required={required}
+          >
             {options.map((option) => (
               <option key={option} value={option}>
                 {option}
@@ -17,11 +37,15 @@ const Input = ({ label, name, type, value, onChange, required, unit, options }) 
             ))}
           </select>
         ) : (
-          <>
-            <input type={type} name={name} value={value} onChange={onChange} required={required} />
-            {type === 'number' && unit}
-          </>
+          <input
+            type={type}
+            name={name}
+            value={value}
+            onChange={onChange}
+            required={required}
+          />
         )}
+        {unit}
       </label>
     </div>
   );
@@ -29,158 +53,34 @@ const Input = ({ label, name, type, value, onChange, required, unit, options }) 
 
 function App() {
   const [formData, setFormData] = useState({
-    systolicBloodPressure: '',
-    heartRate: '',
-    respiratoryRate: '',
-    oxygenSaturation: '',
+    systolicBloodPressure: "",
+    heartRate: "",
+    respiratoryRate: "",
+    oxygenSaturation: "",
     hasSupplementaryO2Device: false,
-    temperature: '',
-    gcs: '',
-    responsiveness: '',
+    temperature: "",
+    gcs: "",
+    responsiveness: "",
     equalPupils: false,
     responsiveToLight: false,
-    heartBeatRhythm: '',
+    heartBeatRhythm: "",
     dehydration: false,
-    hemoglobin: '',
-    urineOutput: '',
+    hemoglobin: "",
+    urineOutput: "",
   });
-
-  const calculateRiskScore = () => {
-    // Sample risk score calculation (you can replace this with your own logic)
-    let riskScore = 0;
-    let noRisk = false;
-    let lowRisk = false;
-    let midRisk = false;
-    let highRisk = false;
-
-    // Example: Increase risk score if heart rate is above 100
-    if (formData.heartRate >= 130) {
-      midRisk = true;
-      riskScore += 3;
-    } else if (formData.heartRate >= 110 && formData.heartRate < 130){
-      riskScore += 2;
-    } else if (formData.heartRate >= 90 && formData.heartRate < 110){
-      riskScore += 1;
-    } else if (formData.heartRate >= 50 && formData.heartRate < 90){
-      riskScore += 0;
-    } else if (formData.heartRate >= 50 && formData.heartRate < 90){
-      riskScore += 0;
-    } else if (formData.heartRate >= 40 && formData.heartRate < 50){
-      riskScore += 1;
-    } else if (formData.heartRate < 40) {
-      midRisk = true;
-      riskScore += 3;
-    }
-
-
-    if (formData.systolicBloodPressure >= 220) {
-      midRisk = true;
-      riskScore += 3;
-    } else if (formData.systolicBloodPressure >= 111 && formData.systolicBloodPressure < 220){
-      riskScore += 0;
-    } else if (formData.systolicBloodPressure >= 101 && formData.systolicBloodPressure < 111){
-      riskScore += 1;
-    } else if (formData.systolicBloodPressure >= 91 && formData.systolicBloodPressure < 101){
-      riskScore += 2;
-    } else if (formData.systolicBloodPressure < 91) {
-      riskScore += 3;
-      midRisk = true;
-    }
-
-
-    // Example: Increase risk score if oxygen saturation is below 95
-    if (formData.oxygenSaturation >= 96) {
-      riskScore += 0;
-    } else if (formData.oxygenSaturation >= 94 && formData.oxygenSaturation < 96){
-      riskScore += 1;
-    } else if (formData.oxygenSaturation >= 92 && formData.oxygenSaturation < 93){
-      riskScore += 2;
-    } else if (formData.oxygenSaturation <= 91) {
-      midRisk = true;
-      riskScore += 3;
-    }
-
-    if (formData.hasSupplementaryO2Device) {
-      riskScore += 2;
-    } 
-  
-    if (formData.temperature >= 39.1) {
-      riskScore += 2;
-    } else if (formData.temperature >= 38.1 && formData.temperature < 39.1){
-      riskScore += 1;
-    } else if (formData.temperature >= 36.1 && formData.temperature < 38.1){
-      riskScore += 0;
-    } else if (formData.temperature >= 35.1 && formData.temperature < 36.1) {
-      riskScore += 1;
-    } else if (formData.temperature < 35.1) {
-      midRisk = true;
-      riskScore += 3;
-    }
-
-    if (formData.responsiveness != 'Alert') {
-      midRisk = true;
-      riskScore += 3;
-    }
-
-    if (formData.gcs != 15) {
-      riskScore += 1;
-    }
-
-    if (!formData.equalPupils || !formData.responsiveToLight){
-      riskScore += 1;
-    }
-
-    if (formData.dehydration) {
-      riskScore += 1;
-    }
-
-    if (formData.heartBeatRhythm != 'Regular') {
-      riskScore += 1;
-    }
-
-    if (riskScore >= 7) {
-      highRisk = true;
-    } else if (riskScore >= 5 && riskScore < 7 || midRisk){
-      midRisk = true;
-    } else if (riskScore >= 1 && riskScore < 5) {
-      lowRisk = true;
-    } else {
-      noRisk = true;
-    }
-
-    return riskScore;
-  };
-
-
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: type === 'checkbox' ? checked : value }));
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Calculate risk score
-    const riskScore = calculateRiskScore();
-
-    let monitoringInstructions = '';
-    if (riskScore === 0) {
-      monitoringInstructions = 'Monitor every 12 hours by nurse.';
-    } else if (riskScore >= 1 && riskScore <= 4) {
-      monitoringInstructions = 'Monitor every 6 hours by nurse. Needs nurse evaluation.';
-    } else if (riskScore >= 5 && riskScore <= 6) {
-      monitoringInstructions = 'Doctor needs to review. Every 1-2 hours consult critical care response team.';
-    } else if (riskScore >= 7) {
-      monitoringInstructions = 'Immediate on-site assessment by critical care response team.';
-    }
-
-    // Log risk score and form data
-    console.log('Risk Score:', riskScore);
-    console.log('Form Data:', formData);
-    console.log('Monitoring Instructions:', monitoringInstructions);
-
-    // You can use the risk score and form data as needed (send to backend, display to user, etc.)
+    // Handle form submission, you can send the data to your backend or perform any required actions
+    console.log("Form Data:", formData);
   };
 
   return (
@@ -224,6 +124,7 @@ function App() {
           type="number"
           value={formData.oxygenSaturation}
           onChange={handleChange}
+          required
           unit="%"
         />
 
@@ -231,18 +132,19 @@ function App() {
           label="Supplementary O2 Device"
           name="hasSupplementaryO2Device"
           type="checkbox"
-          checked={formData.hasSupplementaryO2Device}
+          value={formData.hasSupplementaryO2Device}
           onChange={handleChange}
+          required
         />
 
         <Input
-          label="Temperature (Celsius)"
+          label="Temperature"
           name="temperature"
           type="number"
           value={formData.temperature}
           onChange={handleChange}
           required
-          unit="Degrees"
+          unit="Degrees Celsius"
         />
 
         <Input
@@ -262,23 +164,25 @@ function App() {
           value={formData.responsiveness}
           onChange={handleChange}
           required
-          options={['', 'Alert', 'Voice', 'Pain', 'Unresponsive']}
+          options={["", "Alert", "Voice", "Pain", "Unresponsive"]}
         />
 
         <Input
           label="Equal Pupils"
           name="equalPupils"
           type="checkbox"
-          checked={formData.equalPupils}
+          value={formData.equalPupils}
           onChange={handleChange}
+          required
         />
 
         <Input
           label="Pupil reaction to light"
           name="responsiveToLight"
           type="checkbox"
-          checked={formData.responsiveToLight}
+          value={formData.responsiveToLight}
           onChange={handleChange}
+          required
         />
 
         <Input
@@ -288,7 +192,12 @@ function App() {
           value={formData.heartBeatRhythm}
           onChange={handleChange}
           required
-          options={['', 'Regular', 'Regularly Irregular', 'Irregularly Irregular']}
+          options={[
+            "",
+            "Regular",
+            "Regularly Irregular",
+            "Irregularly Irregular",
+          ]}
         />
 
         <Input
@@ -297,6 +206,7 @@ function App() {
           type="checkbox"
           value={formData.dehydration}
           onChange={handleChange}
+          required
         />
 
         <button type="submit">Submit</button>

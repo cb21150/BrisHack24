@@ -16,12 +16,16 @@ def hello():
 # get all patients
 @app.route('/api/patients', methods=['GET'])
 def get_patients():
-    # patients = Patient.query.all()
     # sort patients by priority level descending order
     patients = Patient.query.order_by(desc(Patient.priority_level)).all()
 
-
     return jsonify([patient.to_json() for patient in patients])
+
+@app.route('/api/patient/<int:id>', methods=['GET'])
+def get_patient(id):
+    patient = Patient.query.get(id)
+
+    return jsonify(patient.to_json())
 
 @app.route('/api/submit_vitals', methods=['POST'])
 def submit_vitals():
@@ -93,7 +97,7 @@ given the following patient conditions:
 # This is the route that the frontend will use to send a message to the backend
 @app.route('/api/generate_response', methods=['POST'])
 def generate_response():
-    try:
+    # try:
         # Get the JSON data from the request
         data = request.get_json()
 
@@ -142,5 +146,5 @@ def generate_response():
         # Return the generated response as JSON
         return jsonify({"message": "Your data has been submitted succesfully and will be reviews by a nurse soon"})
 
-    except Exception as e:
-        return jsonify(error=str(e)), 500
+    # except Exception as e:
+    #     return jsonify(error=str(e)), 500

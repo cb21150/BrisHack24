@@ -1,8 +1,19 @@
 import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 export default function Component() {
   const { id } = useParams();
-  console.log(id)
+
+  const [patientData, setPatientData] = useState([]);
+
+  useEffect(() => {
+    // Assuming you have an API endpoint for fetching patient data
+    fetch('http://localhost:8000/api/patient/' + id)
+      .then((response) => response.json())
+      .then((data) => setPatientData(data))
+      .catch((error) => console.error('Error fetching patient data:', error));
+  }, []);
+
   return (
     <div className="bg-white p-6 max-auto mx-auto rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-6">
