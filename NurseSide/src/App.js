@@ -86,7 +86,7 @@ function App() {
     } else if (formData.oxygenSaturation >= 92 && formData.oxygenSaturation < 93){
       riskScore += 2;
     } else if (formData.oxygenSaturation <= 91) {
-      riskSore += 3;
+      riskScore += 3;
     }
 
     if (formData.hasSupplementaryO2Device) {
@@ -100,9 +100,9 @@ function App() {
     } else if (formData.temperature >= 36.1 && formData.temperature < 38.1){
       riskScore += 0;
     } else if (formData.temperature >= 35.1 && formData.temperature < 36.1) {
-      riskSore += 1;
+      riskScore += 1;
     } else if (formData.temperature < 35.1) {
-      riskSore += 3;
+      riskScore += 3;
     }
 
     if (formData.responsiveness != 'Alert') {
@@ -268,26 +268,6 @@ function App() {
           value={formData.dehydration}
           onChange={handleChange}
           required
-        />
-
-        <Input
-          label="Haemoglobin"
-          name="hemoglobin"
-          type="number"
-          value={formData.hemoglobin}
-          onChange={handleChange}
-          required
-          unit="g/dL"
-        />
-
-        <Input
-          label="Urint Output"
-          name="urineOutput"
-          type="number"
-          value={formData.urineOutput}
-          onChange={handleChange}
-          required
-          unit="mL/kg/hour"
         />
 
         <button type="submit">Submit</button>
