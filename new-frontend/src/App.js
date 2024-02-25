@@ -4,6 +4,7 @@ import LoginScreen from "./LoginScreen";
 import PatientInfo from "./PatientInfo";
 import Component from "./outputtest";
 import NursePage from "./NursePage";
+import Vitals from "./Vitals";
 import React, { useState } from "react";
 import "./App.css";
 
@@ -35,6 +36,7 @@ function App() {
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/patient/:id" element={<Component />} />
         <Route path="/nurse" element={<NursePage />} />
+        <Route path="/vitals/:id" element={<Vitals />} />
       </Routes>
     </BrowserRouter>
   );

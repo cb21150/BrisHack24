@@ -44,12 +44,16 @@ const NursePage = () => {
             <h2 className="text-xl font-bold mb-2">Patient's Name: {patient.name}</h2>
             <p className="text-gray-600 mb-2">NHS Number: {patient.nhsNumber}</p>
             <p className="text-gray-600 mb-4">Conditions: {patient.conditions}</p>
+            <span><strong>Urgency Level: </strong></span>
             <div className={`p-2 rounded ${getPriorityColor(patient.priorityLevel)}`}>
               <p className="text-white font-bold">{getPriorityText(patient.priorityLevel)}</p>
             </div>
-            <p className="text-gray-800 mt-4"><strong>Generated Report: </strong>{patient.generatedResponse}</p>
+            {/* <p className="text-gray-800 mt-4"><strong>Generated Report: </strong>{patient.generatedResponse}</p> */}
             <Link to={`/patient/${patient.id}`} className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               View Results
+            </Link>
+            <Link to={`/vitals/${patient.id}`} className="mt-4 ml-4 inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              Take Vitals
             </Link>
           </div>
         ))}

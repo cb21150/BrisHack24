@@ -1,12 +1,25 @@
 from api import app
 from flask import request, jsonify
 import json
-from api.models import db, Patient
+from api.models import db, Patient, Vitals
 from openai import OpenAI
 from sqlalchemy import desc
 
 client = OpenAI(api_key='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')
 
+system_prompt = """
+You are a triage assistant receiving input about the patient conditions who is in an A&E.
+Diagnose him to the nurse. Use concise medical language. 
+Then select only one of the following options of requiring the vital signs:
+1.zero-urgency
+2.low-urgency
+3.medium-urgency
+4.high-urgency
+5.very high-urgency
+generate a detailed diagnosis and a priority level of requiring the vital signs from the options above.
+give me the response as json data with the following keys: diagnosis, priority_level (as number), detailed_diagnosis.
+given the following patient conditions:
+"""
 
 @app.route('/')
 def hello():
@@ -24,13 +37,15 @@ def get_patients():
 @app.route('/api/patient/<int:id>', methods=['GET'])
 def get_patient(id):
     patient = Patient.query.get(id)
+    vitals = Vitals.query.filter_by(patient_id=id).first()
 
-    return jsonify(patient.to_json())
+    return jsonify(patient=patient.to_json(), vitals=vitals.to_json() if vitals else {})
 
 @app.route('/api/submit_vitals', methods=['POST'])
 def submit_vitals():
-    try:
+    # try:
         data = request.get_json()
+        print(data)
 
         patient_id = data.get('patientId')
 
@@ -47,16 +62,18 @@ def submit_vitals():
         responsive_to_light = data.get('responsiveToLight')
         heart_beat_rhythm = data.get('heartBeatRhythm')
         dehydration = data.get('dehydration')
-        hemoglobin = data.get('hemoglobin')
-        urine_output = data.get('urineOutput')
+        risk_score = data.get('riskScore')
+        monitoring_instructions = data.get('monitoringInstructions')
 
         patient = Patient.query.get(patient_id)
+
         # patient.conditions + the submitted vitals as prompt to the GPT-3 model
         completion = client.chat.completions.create(
           model="gpt-3.5-turbo",
           messages=[
-            {"role": "system", "content": patient.conditions},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"""
+             Patient Conditions: {patient.conditions},
              Systolic Blood Pressure: {systolic_blood_pressure},
              Heart Rate: {heart_rate},
              Respiratory Rate: {respiratory_rate},
@@ -69,35 +86,46 @@ def submit_vitals():
              Responsive to Light: {responsive_to_light},
              Heart Beat Rhythm: {heart_beat_rhythm},
              Dehydration: {dehydration},
-             Hemoglobin: {hemoglobin},
-             Urine Output: {urine_output}
           """}
           ]
         )
 
+        generated_text = completion.choices[0].message
+        generated_text = json.loads(generated_text.content)
+
+
+        # create vitals object and add to database
+        vitals = Vitals(
+            systolic_blood_pressure=systolic_blood_pressure,
+            heart_rate=heart_rate,
+            respiratory_rate=respiratory_rate,
+            oxygen_saturation=oxygen_saturation,
+            has_supplementary_o2_device=has_supplementary_o2_device,
+            temperature=temperature,
+            gcs=gcs,
+            responsiveness=responsiveness,
+            equal_pupils=equal_pupils,
+            responsive_to_light=responsive_to_light,
+            heart_beat_rhythm=heart_beat_rhythm,
+            dehydration=dehydration,
+            risk_score=risk_score,
+            monitoring_instructions=monitoring_instructions,
+            detailed_diagnosis=generated_text["detailed_diagnosis"],
+            patient_id=patient_id
+        )
+
+        db.session.add(vitals)
+        db.session.commit()
+
         return jsonify({"message": "Vitals submitted successfully"})
 
-    except Exception as e:
-        return jsonify(error=str(e)), 500
-
-
-system_prompt = """
-You are a triage assistant receiving input about the patient conditions who is in an A&E.
-Diagnose him to the nurse. Use concise medical language. 
-Then select only one of the following options of requiring the vital signs:
-1.zero-urgency
-2.low-urgency
-3.medium-urgency
-4.high-urgency
-5.very high-urgency
-generate a detailed diagnosis and a priority level of requiring the vital signs from the options above.
-given the following patient conditions:
-"""
+    # except Exception as e:
+    #     return jsonify(error=str(e)), 500
 
 # This is the route that the frontend will use to send a message to the backend
 @app.route('/api/generate_response', methods=['POST'])
 def generate_response():
-    # try:
+    try:
         # Get the JSON data from the request
         data = request.get_json()
 
@@ -122,10 +150,9 @@ def generate_response():
         # Extract the generated text from the OpenAI response
         generated_text = completion.choices[0].message
 
-        # extract priority level from the generated response by looking for Priority Level: and the next word
-        priority_level = generated_text.content.split("Priority Level: ")[1].split(" ")[0]
+        generated_text = json.loads(generated_text.content)
 
-        generated_response = generated_text.content
+        generated_response = generated_text["detailed_diagnosis"]
 
         # Create a new patient object
         patient = Patient(
@@ -134,17 +161,15 @@ def generate_response():
             is_form_for_self=patient_for_self,
             conditions=patient_conditions,
             generated_response=generated_response,
-            priority_level=priority_level
+            priority_level=generated_text["priority_level"]
         )
 
         # Add the patient to the database
         db.session.add(patient)
         db.session.commit()
 
-        print(generated_text.content)
-
         # Return the generated response as JSON
         return jsonify({"message": "Your data has been submitted succesfully and will be reviews by a nurse soon"})
 
-    # except Exception as e:
-    #     return jsonify(error=str(e)), 500
+    except Exception as e:
+        return jsonify(error=str(e)), 500
