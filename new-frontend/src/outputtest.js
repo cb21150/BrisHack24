@@ -1,5 +1,8 @@
+import { useParams } from 'react-router-dom';
 
 export default function Component() {
+  const { id } = useParams();
+  console.log(id)
   return (
     <div className="bg-white p-6 max-auto mx-auto rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-6">

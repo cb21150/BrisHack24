@@ -2,11 +2,8 @@ import logo from "./logo.svg";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import LoginScreen from "./LoginScreen";
 import PatientInfo from "./PatientInfo";
-<<<<<<< HEAD
 import Component from "./outputtest";
-=======
 import NursePage from "./NursePage";
->>>>>>> 4e188e4ed575f6902e7bbe975048de13892cac9f
 import React, { useState } from "react";
 import "./App.css";
 
@@ -18,22 +15,22 @@ function App() {
                     <li>
                         <Link to="/" className="hover:underline">Patient Information</Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link to="/login" className="hover:underline">Patient Health Condition</Link>
-                    </li>
+                    </li> */}
                     <li>
-                        <Link to="/output" className="hover:underline">Output</Link>
+                        <Link to="/nurse" className="hover:underline">Nurse</Link>
                     </li>
+                    {/* <li>
+                        <Link to="/output" className="hover:underline">Output</Link>
+                    </li> */}
                 </ul>
             </nav>
       <Routes>
         <Route path="/" element={<PatientInfo />} />
         <Route path="/login" element={<LoginScreen />} />
-<<<<<<< HEAD
-        <Route path="/output" element={<Component/>}/>
-=======
+        <Route path="/patient/:id" element={<Component/>}/>
         <Route path="/nurse" element={<NursePage />} />
->>>>>>> 4e188e4ed575f6902e7bbe975048de13892cac9f
       </Routes>
     </BrowserRouter>
   );

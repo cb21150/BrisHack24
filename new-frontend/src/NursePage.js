@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const NursePage = () => {
   const [patientData, setPatientData] = useState([]);
@@ -47,6 +48,9 @@ const NursePage = () => {
               <p className="text-white font-bold">{getPriorityText(patient.priorityLevel)}</p>
             </div>
             <p className="text-gray-800 mt-4"><strong>Generated Report: </strong>{patient.generatedResponse}</p>
+            <Link to={`/patient/${patient.id}`} className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              View Results
+            </Link>
           </div>
         ))}
       </div>
