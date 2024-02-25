@@ -5,7 +5,7 @@ from api.models import db, Patient
 from openai import OpenAI
 from sqlalchemy import desc
 
-client = OpenAI()
+client = OpenAI(api_key='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')
 
 
 @app.route('/')
