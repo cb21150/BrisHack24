@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
 
 from api.config import Config
 
@@ -13,5 +14,7 @@ app.config.from_object(Config)
 # bcrypt = Bcrypt(app)
 
 app.config['JWT_SECRET_KEY'] = 'supersecretkey'  # Change this!
+
+db = SQLAlchemy(app)
 
 from api import routes
