@@ -1,7 +1,41 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
-import React, { useState } from 'react';
+const Input = ({ label, name, type, value, onChange, required, unit }) => {
+  if (type === 'checkbox') {
+    return (
+      <div className="input-container">
+        <label>
+          {label}:
+          <input
+            type={type}
+            name={name}
+            checked={value}
+            onChange={onChange}
+            required={required}
+          />
+          {unit}
+        </label>
+      </div>
+    );
+  }
+
+  return (
+    <div className="input-container">
+      <label>
+        {label}:
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          required={required}
+        />
+        {unit}
+      </label>
+    </div>
+  );
+};
 
 function App() {
   const [formData, setFormData] = useState({
@@ -23,10 +57,7 @@ function App() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    setFormData((prevData) => ({ ...prevData, [name]: type === 'checkbox' ? checked : value }));
   };
 
   const handleSubmit = (e) => {
@@ -40,59 +71,81 @@ function App() {
       <h1>Medical Assessment Form</h1>
       <form onSubmit={handleSubmit}>
         {/* Add your form fields here */}
-        <div>
-          <label>
-            Systolic Blood Pressure:
-            <input
-              type="number"
-              name="systolicBloodPressure"
-              value={formData.systolicBloodPressure}
-              onChange={handleChange}
-              required
-            />
-            mmHg
-          </label>
-        </div>
+        <Input
+          label="Systolic Blood Pressure"
+          name="systolicBloodPressure"
+          type="number"
+          value={formData.systolicBloodPressure}
+          onChange={handleChange}
+          required
+          unit="mmHg"
+        />
 
-        <div>
-          Heart Rate:
-          <input
-            type="number"
-            name="heartRate"
-            value={formData.heartRate}
-            onChange={handleChange}
-            required
-          />
-          bpm
-        </div>
+        <Input
+          label="Heart Rate"
+          name="heartRate"
+          type="number"
+          value={formData.heartRate}
+          onChange={handleChange}
+          required
+          unit="bpm"
+        />
 
-        <div>
-          Respiratory Rate:
-          <input
-            type="number"
-            name="respiratoryRate"
-            value={formData.respiratoryRate}
-            onChange={handleChange}
-            required
-          />
-          breaths per min
-        </div>
-        
-        <div>
-          Oxygen Saturation:
-          <input
-            type="number"
-            name="oxygenSaturation"
-            value={formData.oxygenSaturation}
-            onChange={handleChange}
-            required
-          />
-          %
-        </div>
-        
+        <Input
+          label="Respiratory Rate"
+          name="respiratoryRate"
+          type="number"
+          value={formData.respiratoryRate}
+          onChange={handleChange}
+          required
+          unit="breaths/min"
+        />
 
-        {/* Repeat similar structures for other fields */}
+        <Input
+          label="Oxygen Saturation"
+          name="oxygenSaturation"
+          type="number"
+          value={formData.oxygenSaturation}
+          onChange={handleChange}
+          required
+          unit="%"
+        />
+
+        <Input
+          label="Supplementary O2 Device"
+          name="hasSupplementaryO2Device"
+          type="checkbox"
+          value={formData.hasSupplementaryO2Device}
+          onChange={handleChange}
+          required
+        />
+
+        <Input
+          label="Temperature"
+          name="temperature"
+          type="number"
+          value={formData.temperature}
+          onChange={handleChange}
+          required
+          unit="Degrees Celsius"
+        />
+
+        <Input
+          label="GCS"
+          name="gcs"
+          type="number"
+          value={formData.gcs}
+          onChange={handleChange}
+          required
+          unit="/15"
+        />
+
+      
+
+
+        {/* Add the rest of your form fields using the Input component */}
         {/* ... */}
+
         <button type="submit">Submit</button>
       </form>
     </div>
