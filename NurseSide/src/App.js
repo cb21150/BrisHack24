@@ -198,19 +198,19 @@ function App() {
           label="Supplementary O2 Device"
           name="hasSupplementaryO2Device"
           type="checkbox"
-          value={formData.hasSupplementaryO2Device}
+          checked={formData.hasSupplementaryO2Device}
           onChange={handleChange}
           required
         />
 
         <Input
-          label="Temperature"
+          label="Temperature (Celsius)"
           name="temperature"
           type="number"
           value={formData.temperature}
           onChange={handleChange}
           required
-          unit="Degrees Celsius"
+          unit="Degrees"
         />
 
         <Input
@@ -237,7 +237,7 @@ function App() {
           label="Equal Pupils"
           name="equalPupils"
           type="checkbox"
-          value={formData.equalPupils}
+          checked={formData.equalPupils}
           onChange={handleChange}
           required
         />
@@ -246,7 +246,7 @@ function App() {
           label="Pupil reaction to light"
           name="responsiveToLight"
           type="checkbox"
-          value={formData.responsiveToLight}
+          checked={formData.responsiveToLight}
           onChange={handleChange}
           required
         />
