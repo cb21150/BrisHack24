@@ -2,6 +2,7 @@ import logo from "./logo.svg";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import LoginScreen from "./LoginScreen";
 import PatientInfo from "./PatientInfo";
+import NursePage from "./NursePage";
 import React, { useState } from "react";
 import "./App.css";
 
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<PatientInfo />} />
         <Route path="/login" element={<LoginScreen />} />
+        <Route path="/nurse" element={<NursePage />} />
       </Routes>
     </BrowserRouter>
   );
