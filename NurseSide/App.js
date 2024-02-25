@@ -2,55 +2,23 @@ import React, { useState } from 'react';
 import './App.css';
 
 const Input = ({ label, name, type, value, onChange, required, unit, options }) => {
-  if (type === 'checkbox') {
-    return (
-      <div className="input-container">
-        <label>
-          {label}:
-          <input
-            type={type}
-            name={name}
-            checked={value}
-            onChange={onChange}
-            required={required}
-          />
-          {unit}
-        </label>
-      </div>
-    );
-  } else if (type === 'select') {
-    return (
-      <div className="input-container">
-        <label>
-          {label}:
-          <select
-            name={name}
-            value={value}
-            onChange={onChange}
-            required={required}
-          >
+  return (
+    <div className="input-container">
+      <label>
+        {label}:
+        {type === 'checkbox' ? (
+          <input type={type} name={name} checked={value} onChange={onChange} required={required} />
+        ) : type === 'select' ? (
+          <select name={name} value={value} onChange={onChange} required={required}>
             {options.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
             ))}
           </select>
-        </label>
-      </div>
-    );
-  }
-
-  return (
-    <div className="input-container">
-      <label>
-        {label}:
-        <input
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          required={required}
-        />
+        ) : (
+          <input type={type} name={name} value={value} onChange={onChange} required={required} />
+        )}
         {unit}
       </label>
     </div>
