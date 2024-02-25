@@ -57,7 +57,8 @@ export default function Component() {
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-lg text-gray-800">Risk level</span>
-            <span className="w-24 h-2 bg-gray-800 rounded" />
+            <div className={`w-full h-2 rounded ${vitalsData.riskScore <= 5 ? 'bg-green-400' : vitalsData.riskScore <= 10 ? 'bg-yellow-400' : 'bg-red-500'}`} style={{ width: `${(vitalsData.riskScore / 17) * 80}%` }} />
+            {/* <span className="h-2 bg-gray-800 rounded" style={{width: `${(vitalsData.riskScore / 17) * 80}%`}} /> */}
           </div>
           <div className="flex justify-between items-center">
             <span className="text-lg text-gray-800">Next Destination</span>
