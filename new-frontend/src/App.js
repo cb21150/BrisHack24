@@ -2,6 +2,7 @@ import logo from "./logo.svg";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import LoginScreen from "./LoginScreen";
 import PatientInfo from "./PatientInfo";
+import Component from "./outputtest";
 import React, { useState } from "react";
 import "./App.css";
 
@@ -16,11 +17,15 @@ function App() {
                     <li>
                         <Link to="/login" className="hover:underline">Patient Health Condition</Link>
                     </li>
+                    <li>
+                        <Link to="/output" className="hover:underline">Output</Link>
+                    </li>
                 </ul>
             </nav>
       <Routes>
         <Route path="/" element={<PatientInfo />} />
         <Route path="/login" element={<LoginScreen />} />
+        <Route path="/output" element={<Component/>}/>
       </Routes>
     </BrowserRouter>
   );
