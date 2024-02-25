@@ -24,6 +24,9 @@ def generate_response():
         # Get the JSON data from the request
         data = request.get_json()
 
+        return jsonify(data)
+        print(data)
+
         # Extract the prompt from the JSON data
         request_prompt = data.get('prompt')
 
