@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Input = ({
   label,
@@ -251,8 +252,11 @@ const calculateRiskScore = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 pt-16 mb-6">
-      <h1 className="text-3xl font-bold mb-4">Medical Assessment Form</h1>
+    <div className="container mx-auto px-4 pt-4 mb-6">
+      <Link to="/nurse" className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Go Back
+      </Link>
+      <h1 className="text-3xl font-bold mb-4 mt-4">Medical Assessment Form</h1>
 
       <p className="text-xl mb-2"><strong>Patient Name:</strong> {patientData.name}</p>
       <p className="text-xl mb-4"><strong>NHS Number:</strong> {patientData.nhsNumber}</p>
