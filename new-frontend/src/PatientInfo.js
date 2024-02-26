@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BeatLoader } from "react-spinners";
 
 export default function PatientInfo() {
   const [patientName, setPatientName] = useState("");
@@ -7,6 +8,7 @@ export default function PatientInfo() {
   const [conditions, setConditions] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleOptionChange = (event) => {
     console.log("event.target.id:", event.target.id);
@@ -16,6 +18,8 @@ export default function PatientInfo() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    setLoading(true);
 
     const apiUrl = "http://localhost:8000/api/generate_response";
 
@@ -50,11 +54,9 @@ export default function PatientInfo() {
       console.error("Error submitting form:", error);
       setErrorMessage("An error occurred while submitting the form.");
       setSuccessMessage("");
+    } finally {
+      setLoading(false);
     }
-    //   console.log("Response from server:", data);
-    // } catch (error) {
-    //   console.error("Error submitting form:", error);
-    // }
   };
 
   return (
@@ -79,6 +81,7 @@ export default function PatientInfo() {
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="patient-name"
                 placeholder="Enter the patient's name"
+                required
                 value={patientName}
                 onChange={(e) => setPatientName(e.target.value)}
               />
@@ -94,6 +97,7 @@ export default function PatientInfo() {
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="patient-nhs-number"
                 placeholder="Enter the patient's NHS number"
+                required
                 value={nhsNumber}
                 onChange={(e) => setNhsNumber(e.target.value)}
               />
@@ -162,20 +166,25 @@ export default function PatientInfo() {
                 className="h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="conditions"
                 placeholder="Enter the conditions"
+                required
                 value={conditions}
                 onChange={(e) => setConditions(e.target.value)}
               />
             </div>
             <div className="flex justify-center">
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-              >
-                Submit
-              </button>
+              {loading ? (
+                <BeatLoader color="#000" />
+              ) : (
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                  Submit
+                </button>
+              )}
             </div>
-{successMessage && <div className="bg-green-100 text-green-800 p-4 rounded-md">{successMessage}</div>}
-      {errorMessage && <div className="bg-red-100 text-red-800 p-4 rounded-md">{errorMessage}</div>}
+          {successMessage && <div className="bg-green-100 text-green-800 p-4 rounded-md">{successMessage}</div>}
+          {errorMessage && <div className="bg-red-100 text-red-800 p-4 rounded-md">{errorMessage}</div>}
           </div>
         </div>
       </div>
