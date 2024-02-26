@@ -53,7 +53,7 @@ const NursePage = () => {
 
   const deletePatient = (patientId) => {
     fetch(`http://localhost:8000/api/patient/${patientId}`, {
-      method: 'DELETE'
+      method: 'POST'
     })
     .then(response => {
       if (!response.ok) {
@@ -73,7 +73,7 @@ const NursePage = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-4">Submitted Patient's Conditions</h1>
+      <h1 className="text-3xl font-bold mb-4">Current Patients</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {patientData.map((patient) => (

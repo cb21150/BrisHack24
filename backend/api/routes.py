@@ -95,7 +95,7 @@ def generate_response():
         db.session.commit()
 
         # Return the generated response as JSON
-        return jsonify({"message": "Your data has been submitted succesfully and will be reviews by a nurse soon"})
+        return jsonify({"message": "Your data has been successfully submitted and will be reviewed by a nurse shortly."})
 
     except Exception as e:
         return jsonify(error=str(e)), 500
