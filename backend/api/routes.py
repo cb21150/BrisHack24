@@ -7,9 +7,6 @@ from sqlalchemy import desc
 
 
 
-
-
-
 client = OpenAI(api_key='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')
 
 system_prompt = """
@@ -181,57 +178,22 @@ def submit_vitals():
 
                 return jsonify({"message": "Vitals submitted successfully"})
 
-@app.route('/api/discharge_patient', methods=['POST'])
-def discharge_patient():
-    try:
-        data = request.get_json()
-        patient_id = data.get('patientId')
-        patient = Patient.query.get(patient_id)
-        db.session.delete(patient)
-        db.session.commit()
-        return jsonify({"message": "Patient discharged successfully"})
-    except Exception as e:
-        return jsonify(error=str(e)), 500
-    
-    from flask import request
 
-@app.route('/api/patient/<int:patient_id>', methods=['DELETE'])
-def delete_patient(patient_id):
+@app.route('/api/discharge_patient/<int:id>', methods=['POST'])
+def discharge_patient(id):
+    print(id)
     try:
-        patient = Patient.query.get(patient_id)
-        patient_data = {
-            'id': patient.id,
-            'name': patient.name,
-            'age': patient.age,
-            'nhsNumber': patient.nhs_number,
-            'isFormForSelf': patient.is_form_for_self,
-            'conditions': patient.conditions,
-            'generatedResponse': patient.generated_response,
-            'priorityLevel': patient.priority_level
-            # Add other attributes as needed
-        }
-        db.session.delete(patient)
-        db.session.commit()
-        return jsonify({"message": "Patient discharged successfully"})
+      patient = Patient.query.get(id)
+      print(patient)
+      # detele vitals data
+      if patient.vitals:
+        Vitals.query.filter_by(patient_id=id).delete()
+
+      db.session.delete(patient)
+      db.session.commit()
+
+      return jsonify({"message": "Patient discharged successfully"})
     except Exception as e:
         return jsonify(error=str(e)), 500
 
-    vitality = Vitals.query.get(patient_id)
-    vitality_data = {
-        'id': vitality.id,
-        'heartRate': vitality.heart_rate,
-        'bloodPressure': vitality.blood_pressure,
-        'temperature': vitality.temperature,
-        'oxygenLevel': vitality.oxygen_level,
-        # Add other attributes as needed
-    }
-    print(patient_data, vitality_data)
-    db.session.remove(patient_data)
-    db.session.remove(vitality_data)
-    db.session.commit()
-    return jsonify({'message': 'Patient deleted successfully'}), 200
-
-
-    # except Exception as e:
-    #     return jsonify(error=str(e)), 500
     

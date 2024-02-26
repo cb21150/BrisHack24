@@ -52,7 +52,8 @@ const NursePage = () => {
   }
 
   const deletePatient = (patientId) => {
-    fetch(`http://localhost:8000/api/patient/${patientId}`, {
+    console.log(patientId);
+    fetch(`http://localhost:8000/api/discharge_patient/${patientId}`, {
       method: 'POST'
     })
     .then(response => {
@@ -78,7 +79,6 @@ const NursePage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {patientData.map((patient) => (
           <div id={`container-${patient.id}`} key={patient.id} className="p-4 rounded shadow-md">
-            <h2 className="text-xl font-bold mb-2">Patient's Name: {patient.name}</h2>
             <p className="text-gray-600 mb-2">NHS Number: {patient.nhsNumber}</p>
             <p className="text-gray-600 mb-4">Conditions: {patient.conditions}</p>
             <span><strong>Urgency Level: </strong></span>
