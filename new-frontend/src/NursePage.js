@@ -19,7 +19,7 @@ const NursePage = () => {
       case 3: return 'bg-orange-500';
       case 4: return 'bg-red-500';
       case 5: return 'bg-red-700';
-      default: return 'bg-gray-500';
+      default: return 'bg-red-900';
     }
   }
 
@@ -30,7 +30,7 @@ const NursePage = () => {
       case 3: return 'Medium Urgency';
       case 4: return 'High Urgency';
       case 5: return 'Very High Urgency';
-      default: return 'Unknown Urgency';
+      default: return 'Extreme Urgency';
     }
   }
 
@@ -79,6 +79,7 @@ const NursePage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {patientData.map((patient) => (
           <div id={`container-${patient.id}`} key={patient.id} className="p-4 rounded shadow-md">
+            <p className="text-xl font-bold mb-2 "> Name: {patient.name}</p>
             <p className="text-gray-600 mb-2">NHS Number: {patient.nhsNumber}</p>
             <p className="text-gray-600 mb-4">Conditions: {patient.conditions}</p>
             <span><strong>Urgency Level: </strong></span>
