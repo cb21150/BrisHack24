@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { BeatLoader } from "react-spinners";
 
 const Input = ({
   label,
@@ -62,6 +63,7 @@ function Vitals() {
   const [patientData, setPatientData] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Assuming you have an API endpoint for fetching patient data
@@ -198,6 +200,8 @@ const calculateRiskScore = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    setLoading(true);
 
     // Calculate risk score
     const riskScore = calculateRiskScore();
@@ -245,6 +249,8 @@ const calculateRiskScore = () => {
       console.error("Error submitting form:", error);
       setErrorMessage("An error occurred while submitting the form.");
       setSuccessMessage("");
+    } finally {
+      setLoading(false);
     }
 
     // You can use the risk score and form data as needed (send to backend, display to user, etc.)
@@ -380,9 +386,16 @@ const calculateRiskScore = () => {
         />
 
       <div className="flex justify-center">
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        {loading ? (
+          <BeatLoader color="#000" />
+        ) : (
+          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Submit
+          </button>
+        )}
+        {/* <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           Submit
-        </button>
+        </button> */}
       </div>
       </form>
       {successMessage && <div className="bg-green-100 text-green-800 p-4 rounded-md">{successMessage}</div>}

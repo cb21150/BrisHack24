@@ -138,8 +138,7 @@ export default function Component() {
             {/* <span className="h-2 bg-gray-800 rounded" style={{width: `${(vitalsData.riskScore / 17) * 80}%`}} /> */}
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-lg text-gray-800">Next Destination</span>
-            <span className="text-lg text-gray-800"> variable1 </span>
+            
           </div>
           <div className="flex justify-between items-center">
             <span className="text-lg text-gray-800">Evaluation</span>
