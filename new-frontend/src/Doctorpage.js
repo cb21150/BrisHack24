@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const NursePage = () => {
+const DoctorPage = () => {
   const [patientData, setPatientData] = useState([]);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const NursePage = () => {
       default: return 'bg-red-900';
     }
   }
-  else if (patient.promptno === 2){
+  else if (promptno === 2){
       if ( priority === 0) {
         return 'bg-green-500';
 
@@ -97,14 +97,17 @@ const NursePage = () => {
       // Handle errors here
     });
   }
-  if(promptno === 2){
   return (
     <div className="container mx-auto mt-8">
       <h1 className="text-3xl font-bold mb-4">Current Patients</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {patientData.map((patient) => (
-          <div id={`container-${patient.id}`} key={patient.id} className="p-4 rounded shadow-md">
+            
+          <div id={`container-${patient.id}`} key={patient.id}>
+            {patient.promptno === 2 ? (
+                <div className="p-4 rounded shadow-md">
+                    {/* Your code here */}
             <p className="text-xl font-bold mb-2 "> Name: {patient.name}</p>
             <p className="text-gray-600 mb-2">NHS Number: {patient.nhsNumber}</p>
             <p className="text-gray-600 mb-4">Conditions: {patient.conditions}</p>
@@ -113,27 +116,28 @@ const NursePage = () => {
               <p className="text-white font-bold">{getPriorityText(patient.priorityLevel)}</p>
             </div>
             <Link to={`/patient/${patient.id}`} className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              View Results
-            </Link>
-            <Link to={`/vitals/${patient.id}`} className="mt-4 ml-4 inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-              Call patient
+                    View Patient 
             </Link>
             <button
-              className="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => {
-                deletePatient(patient.id);
-                deleteDivById(`container-${patient.id}`);
-                hideContainer();
-              }}
+                className="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => {
+                    deletePatient(patient.id);
+                    deleteDivById(`container-${patient.id}`);
+                    hideContainer();
+                }}
             >
-              Discharge Patient
+                Discharge Patient
             </button>
-          </div>
+            </div>
+            ) : (
+                deleteDivById(`container-${patient.id}`)
+              )}
+            </div>
+            
         ))}
       </div>
     </div>
   );
 }
-  }
 
-export default NursePage;
+export default DoctorPage;

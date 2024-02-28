@@ -102,13 +102,16 @@ const NursePage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {patientData.map((patient) => (
-          <div id={`container-${patient.id}`} key={patient.id} className="p-4 rounded shadow-md">
+          <div id={`container-${patient.id}`} key={patient.id}>
+            {patient.promptno === 1? (
+                <div className="p-4 rounded shadow-md">
+                    {/* Your code here */}
             <p className="text-xl font-bold mb-2 "> Name: {patient.name}</p>
             <p className="text-gray-600 mb-2">NHS Number: {patient.nhsNumber}</p>
             <p className="text-gray-600 mb-4">Conditions: {patient.conditions}</p>
             <span><strong>Urgency Level: </strong></span>
-            <div className={`p-2 rounded ${getPriorityColor(patient.priorityLevel, patient.promptno)}`}>
-              <p className="text-white font-bold">{getPriorityText(patient.priorityLevel, patient.promptno)}</p>
+            <div className={`p-2 rounded ${getPriorityColor(patient.priorityLevel)}`}>
+              <p className="text-white font-bold">{getPriorityText(patient.priorityLevel)}</p>
             </div>
             <Link to={`/patient/${patient.id}`} className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               View Results
@@ -126,13 +129,17 @@ const NursePage = () => {
             >
               Discharge Patient
             </button>
-          
-
-          </div>
+            </div>
+            ) : (
+              deleteDivById(`container-${patient.id}`)
+            )}
+            </div>
+            
         ))}
       </div>
     </div>
-  );
- }
+  ); 
+}
+
 
 export default NursePage;

@@ -5,6 +5,7 @@ import PatientInfo from "./PatientInfo";
 import Component from "./outputtest";
 import NursePage from "./NursePage";
 import Vitals from "./Vitals";
+import DoctorPage from "./Doctorpage";
 import React, { useState } from "react";
 import "./App.css";
 
@@ -26,6 +27,12 @@ function App() {
               Nurse
             </Link>
           </li>
+          <li>
+            <Link to="/doctor" className="hover:underline">
+              Doctor
+            </Link>
+          </li>
+          
           {/* <li>
                         <Link to="/output" className="hover:underline">Output</Link>
                     </li> */}
@@ -37,6 +44,7 @@ function App() {
         <Route path="/patient/:id" element={<Component />} />
         <Route path="/nurse" element={<NursePage />} />
         <Route path="/vitals/:id" element={<Vitals />} />
+        <Route path="/doctor" element={<DoctorPage />} />
       </Routes>
     </BrowserRouter>
   );
