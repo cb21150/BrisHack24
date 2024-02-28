@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import promptno  from './backend/api/routes.py';
 const NursePage = () => {
   const [patientData, setPatientData] = useState([]);
 
