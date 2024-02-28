@@ -84,12 +84,14 @@ def generate_response():
             is_form_for_self=patient_for_self,
             conditions=patient_conditions,
             generated_response=generated_response,
-            priority_level=generated_text["priority_level"]
+            priority_level=generated_text["priority_level"],
+            promptno=1
         )
 
         # Add the patient to the database
         db.session.add(patient)
         db.session.commit()
+
 
         # Return the generated response as JSON
         return jsonify({"message": "Your data has been successfully submitted and will be reviewed by a nurse shortly."})
@@ -170,6 +172,7 @@ def submit_vitals():
                         patient_id=patient_id
                 )
                 patient.priority_level = risk_score
+                patient.promptno=2 
                 db.session.commit()
         
 

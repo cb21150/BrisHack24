@@ -8,7 +8,7 @@ class Patient(db.Model):
     conditions = db.Column(db.Text)
     generated_response = db.Column(db.Text)
     priority_level = db.Column(db.Integer)
-
+    promptno = db.Column(db.Integer)
     vitals = db.relationship('Vitals', backref='patient', lazy=True)
 
 
@@ -20,7 +20,8 @@ class Patient(db.Model):
             'isFormForSelf': self.is_form_for_self,
             'conditions': self.conditions,
             'generatedResponse': self.generated_response,
-            'priorityLevel': self.priority_level
+            'priorityLevel': self.priority_level,
+            'promptno': self.promptno
         }
 class Vitals(db.Model):
     id = db.Column(db.Integer, primary_key=True)

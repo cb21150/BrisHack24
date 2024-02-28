@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import promptno  from './backend/api/routes.py';
+
 const NursePage = () => {
   const [patientData, setPatientData] = useState([]);
 
@@ -15,7 +15,7 @@ const NursePage = () => {
   
 
   const getPriorityColor = (priority, promptno) => {
-    if (promptno == 1){
+    if (promptno === 1){
 
     switch(priority) {
       case 1: return 'bg-green-500';
@@ -26,15 +26,15 @@ const NursePage = () => {
       default: return 'bg-red-900';
     }
   }
-    else if (promptno == 2){
-      if ( priority == 0) {
+  else if (patient.promptno === 2){
+      if ( priority === 0) {
         return 'bg-green-500';
 
       }
-      else if(1 <= priority && priority <= 4){
+      else if(1 <= priority <= 4){
         return 'bg-yellow-500';
       }
-      else if (5 <= priority && priority <= 6){
+      else if (5 <= priority <= 6){
         return 'bg-orange-500';
       }
       else if (priority >= 7){
@@ -44,7 +44,7 @@ const NursePage = () => {
   }
 
   const getPriorityText = (priority, promptno) => {
-    if (promptno == 1){
+    if (promptno === 1){
     switch(priority) {
       case 1: return 'Zero Urgency';
       case 2: return 'Low Urgency';
@@ -53,8 +53,8 @@ const NursePage = () => {
       case 5: return 'Very High Urgency';
       default: return 'Extreme Urgency';
     }
-  }
-    else if (promptno == 2){
+}
+    else if (promptno === 2){
       return priority;
     }
   }
@@ -96,7 +96,8 @@ const NursePage = () => {
       console.error('Error deleting patient:', error);
       // Handle errors here
     });
-  };
+  }
+  if(promptno === 2){
   return (
     <div className="container mx-auto mt-8">
       <h1 className="text-3xl font-bold mb-4">Current Patients</h1>
@@ -108,14 +109,14 @@ const NursePage = () => {
             <p className="text-gray-600 mb-2">NHS Number: {patient.nhsNumber}</p>
             <p className="text-gray-600 mb-4">Conditions: {patient.conditions}</p>
             <span><strong>Urgency Level: </strong></span>
-            <div className={`p-2 rounded ${getPriorityColor(patient.priorityLevel, patient.promptno)}`}>
-              <p className="text-white font-bold">{getPriorityText(patient.priorityLevel, patient.promptno)}</p>
+            <div className={`p-2 rounded ${getPriorityColor(patient.priorityLevel)}`}>
+              <p className="text-white font-bold">{getPriorityText(patient.priorityLevel)}</p>
             </div>
             <Link to={`/patient/${patient.id}`} className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               View Results
             </Link>
             <Link to={`/vitals/${patient.id}`} className="mt-4 ml-4 inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-              Take Vitals
+              Call patient
             </Link>
             <button
               className="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
@@ -127,13 +128,12 @@ const NursePage = () => {
             >
               Discharge Patient
             </button>
-          
-
           </div>
         ))}
       </div>
     </div>
   );
- }
+}
+  }
 
 export default NursePage;
