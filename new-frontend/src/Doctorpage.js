@@ -107,28 +107,27 @@ const DoctorPage = () => {
           <div id={`container-${patient.id}`} key={patient.id}>
             {patient.promptno === 2 ? (
                 <div className="p-4 rounded shadow-md">
-                    {/* Your code here */}
-            <p className="text-xl font-bold mb-2 "> Name: {patient.name}</p>
-            <p className="text-gray-600 mb-2">NHS Number: {patient.nhsNumber}</p>
-            <p className="text-gray-600 mb-4">Conditions: {patient.conditions}</p>
-            <span><strong>Urgency Level: </strong></span>
-            <div className={`p-2 rounded ${getPriorityColor(patient.priorityLevel)}`}>
-              <p className="text-white font-bold">{getPriorityText(patient.priorityLevel)}</p>
-            </div>
-            <Link to={`/patient/${patient.id}`} className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    View Patient 
-            </Link>
-            <button
-                className="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => {
-                    deletePatient(patient.id);
-                    deleteDivById(`container-${patient.id}`);
-                    hideContainer();
+                    <p className="text-xl font-bold mb-2 "> Name: {patient.name}</p>
+                    <p className="text-gray-600 mb-2">NHS Number: {patient.nhsNumber}</p>
+                    <p className="text-gray-600 mb-4">Conditions: {patient.conditions}</p>
+                    <span><strong>Urgency Level: </strong></span>
+                    <div className={`p-2 rounded ${getPriorityColor(patient.priorityLevel, patient.promptno)}`}>
+                    <p className="text-white font-bold">{getPriorityText(patient.priorityLevel, patient.promptno)}</p>
+                </div>
+                <Link to={`/patient/${patient.id}`} className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        View Patient 
+                </Link>
+                <button
+                    className="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => {
+                        deletePatient(patient.id);
+                        deleteDivById(`container-${patient.id}`);
+                        hideContainer();
                 }}
-            >
-                Discharge Patient
-            </button>
-            </div>
+                >
+                    Discharge Patient
+                </button>
+                </div>
             ) : (
                 deleteDivById(`container-${patient.id}`)
               )}
